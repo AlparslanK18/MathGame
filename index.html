@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Math Game</title>
+       <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400" rel="stylesheet">
+        <style>
+            body{
+                color:#fff;
+                background:#ff00ff;
+                font-family: 'Source Sans Pro', sans-serif;
+            }
+            #oyun-panel{
+                width: 330px;
+                background:#808080;
+                padding:16px;
+                text-align: center;
+                margin:auto;
+            }
+            h1{
+                margin:0 0 16px 0;
+                border:solid 1px #fff;
+                padding:5px;
+                font-weight: 300;
+                
+            }
+            span{
+                font-size: 125%;
+                padding:10px;
+            }
+            #sonuc{
+                width: 50px;
+            }
+            #cevapla{
+                margin-top:10px;
+                padding:5px;
+                border:none;
+                width: 100px;
+                background: #0288D1;
+                color:#fff;
+            }   
+
+            #cevapla:hover{
+                background: #8BC34A;
+            }
+            #dogru,#yanlis{
+                font-size: 150%;
+                margin-top:10px;
+                padding:10px;
+               display: inline-block;
+            }
+            #dogru{
+                background: #4CAF50;
+            }
+            #yanlis{
+                background: #D32F2F;
+            }
+        </style>
+        <body>
+            <div id="oyun-panel">
+              <h1>Four Operations Math Game</h1>
+               <span id="sayi1">0</span>
+               <span id="opt">+</span>
+               <span id="sayi2">0</span>
+               <span>=</span>
+                <input type="text" id="sonuc">
+                <input type="button" id="cevapla" value="Answer">
+                <div style="clear:both"></div>
+                <div id="dogru">0</div>
+                <div id="yanlis">0</div>
+                <div style="clear:both"></div>
+            </div>
+            
+            <script>
+            
+                var sayi1,sayi2,dogru=0,yanlis=0,sonuc,cevapla;
+                var opt;
+                
+                //HTML nesnelerinin oluşturulması
+                sayi1=document.getElementById("sayi1");
+                sayi2=document.getElementById("sayi2");
+                opt=document.getElementById("opt");
+                sonuc=document.getElementById("sonuc");
+                cevapla=document.getElementById("cevapla");
+                dogru=document.getElementById("dogru");
+                yanlis=document.getElementById("yanlis");
+                
+                 //rastgele sayı üretme fonksiyonu
+                
+                Math.rastgele=function(alt, ust){
+                let sayi=Math.random(); 
+                sayi=sayi*(ust-alt);
+                sayi=Math.floor(sayi)+alt;
+
+                return sayi; 
+                }
+                
+                //oyun başladığında yada soru tahmin edildiğinde yeni soru sormak  için kullanılır.
+                function yeniSoru(){
+                    let islem=["+","-","*","/"];
+                    opt.textContent=islem[Math.rastgele(0,4)]; //operatör seçimi
+                    
+                    sayi1.textContent=Math.rastgele(0,50); 
+                    sayi2.textContent=Math.rastgele(0,50);
+                    if(opt.textContent=="/"){
+                        //kalansız bölüm için eklenmiştir.
+                        while(true){
+                            sayi2.textContent=Math.rastgele(0,50);
+                            if(sayi1.textContent%sayi2.textContent==0)
+                            {break;}
+                        }
+                    }
+                 
+                }
+                
+                //sayfa yüklendiğinde ilk kurulumun yapılması
+                window.onload=function(){
+                    
+                    yeniSoru();
+                   
+                }
+                
+                //cevapla butonuna basıldığında değerlendirme işlemi
+                cevapla.onclick=function(){
+                    let cevap,s1,s2;
+                    s1=Number(sayi1.textContent);
+                    s2=Number(sayi2.textContent);
+                    switch(opt.textContent){
+                        case '+':cevap=s1+s2;break;
+                        case "-":cevap=s1-s2;break;
+                        case "*":cevap=s1*s2;break;
+                        case "/":cevap=s1/s2;break;
+                        default:break;      
+                    }
+                              
+                    if(sonuc.value==cevap){
+                       dogru.textContent=Number(dogru.textContent)+1;
+                    }
+                    else{
+                      yanlis.textContent=Number(yanlis.textContent)+1;
+                    }
+                    
+                     yeniSoru();  
+                }
+                
+
+                
+  var saniye = 10, dakika = 0, saat = 0;
+  function bak()
+  {
+    if(saniye < 59) saniye = saniye + 1;
+    else
+    {
+      saniye = 0; 
+      if(dakika < 59) dakika = dakika + 1;
+      else{dakika = 0; saat = saat + 1;}
+    }
+    $("#sure").html(saat + " : " + dakika + " : " + saniye);
+  }
+  $(document).ready(function(){
+    $("#sure").html("0 : 0 : 0");
+    setInterval(bak, 1000);
+  });
+              
+                
+                
+            
+            </script>
+            
+        </body>
+    </head>
+</html>
